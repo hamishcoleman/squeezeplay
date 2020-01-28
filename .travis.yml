@@ -13,8 +13,6 @@ before_script:
 
 script:
     - make -C src/ -f Makefile.linux
-    - pwd
-    - ls -al build
 
 deploy:
     provider: releases
@@ -25,4 +23,4 @@ deploy:
     on:
         tags: true
     file_glob: true
-    file: build/*.tgz
+    file: ../build/*.tgz
