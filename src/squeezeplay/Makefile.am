@@ -240,12 +240,12 @@ jive_SOURCES = \
 	src/jive_debug.c \
 	src/log.c
 
-jive_LDADD = libui.la libdecode.la libnet.la -llua ${SPPRIVATE_LIB} -ldl
+jive_LDADD = libui.la libdecode.la libnet.la -llua ${SPPRIVATE_LIB} -ldl -lm
 
 jive_alsa_SOURCES = \
 	src/audio/decode/decode_alsa_backend.c
 
-jive_alsa_LDADD = libaudio.la -lasound
+jive_alsa_LDADD = libaudio.la -lasound -lm
 
 
 # Test program: jiveblit
