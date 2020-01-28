@@ -79,16 +79,22 @@ static Uint16 mouse_origin_x, mouse_origin_y;
 
 static int ui_watchdog;
 
+/*
+ * FIXME:
+ * - the keys used to replace the mulit-media keys are often
+ *   used for typing normal text, thus they conflict.
+ *
+ */
 static struct jive_keymap keymap[] = {
 	{ SDLK_RIGHT,		JIVE_KEY_GO },
 	{ SDLK_RETURN,		JIVE_KEY_GO },
 	{ SDLK_LEFT,		JIVE_KEY_BACK },
 	{ SDLK_HOME,		JIVE_KEY_HOME },
-	{ SDLK_p,               JIVE_KEY_PLAY },
-	{ SDLK_SPACE,           JIVE_KEY_PAUSE },
+	{ SDLK_p,               JIVE_KEY_PLAY }, /* FIXME */
+	{ SDLK_SPACE,           JIVE_KEY_PAUSE }, /* FIXME */
 	{ SDLK_KP_PLUS,		JIVE_KEY_ADD },
-	{ SDLK_r,               JIVE_KEY_REW },
-	{ SDLK_f,               JIVE_KEY_FWD },
+	{ SDLK_r,               JIVE_KEY_REW }, /* FIXME */
+	{ SDLK_f,               JIVE_KEY_FWD }, /* FIXME */
 	{ SDLK_PLUS,            JIVE_KEY_VOLUME_UP },
 	{ SDLK_EQUALS,          JIVE_KEY_VOLUME_UP },
 	{ SDLK_MINUS,           JIVE_KEY_VOLUME_DOWN },
@@ -104,7 +110,7 @@ static struct jive_keymap keymap[] = {
 	{ SDLK_F6,              JIVE_KEY_PRESET_6 },
 	{ SDLK_F8,              JIVE_KEY_MUTE },
 	{ SDLK_POWER,           JIVE_KEY_POWER },
-	{ SDLK_s,               JIVE_KEY_ALARM },
+	{ SDLK_s,               JIVE_KEY_ALARM }, /* FIXME */
 	{ SDLK_UNKNOWN,		JIVE_KEY_NONE },
 };
 
