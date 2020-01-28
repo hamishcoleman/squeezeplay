@@ -182,9 +182,11 @@ flac: flac-1.2.1/Makefile
 	cd flac-1.2.1; make && make install
 
 #libmad
+# FIXME
+# - this really should not depend on downloading a file!
 LIBMAD_DIR=libmad-0.15.1b
 generated/${LIBMAD_DIR}/Makefile.am:
-	mkdir -p generated; cd generated; wget ftp://ftp.mars.org/pub/mpeg/${LIBMAD_DIR}.tar.gz; tar xvf ./${LIBMAD_DIR}.tar.gz; \
+	mkdir -p generated; cd generated; wget http://repository.timesys.com/buildsources/l/libmad/libmad-0.15.1b/${LIBMAD_DIR}.tar.gz; tar xvf ./${LIBMAD_DIR}.tar.gz; \
 
 		
 generated/${LIBMAD_DIR}/Makefile: generated/${LIBMAD_DIR}/Makefile.am 
