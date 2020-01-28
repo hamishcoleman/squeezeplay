@@ -3,7 +3,7 @@ dist: bionic
 language: c
 
 install:
-    - sudo apt-get -y install libogg-dev libasound-dev dpkg-dev fakeroot
+    - sudo apt-get -y install libogg-dev libasound-dev dpkg-dev fakeroot debhelper
 
 # The output of the tolua++ program has been committed to version control,
 # so try and force using it (the tolua++ program is not installed in the build

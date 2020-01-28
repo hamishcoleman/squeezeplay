@@ -40,6 +40,7 @@ static struct {
 	/* this list is searched in order - so we put our most common formats first */
 //	{ "TGA", NULL,      IMG_LoadTGA_RW },
 	{ "JPG", IMG_isJPG, IMG_LoadJPG_RW },
+	{ "png", IMG_isPNG, IMG_LoadPNG_RW }, /* FIXME: hack */
 	{ "PNG", IMG_isPNG, IMG_LoadPNG_RW },
 	{ "GD" , IMG_isGD,  IMG_LoadGD_RW  },
 	{ "BMP", IMG_isBMP, IMG_LoadBMP_RW },
