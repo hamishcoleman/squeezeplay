@@ -13,3 +13,14 @@ before_script:
 
 script:
     - make -C src/ -f Makefile.linux
+
+deploy:
+    provider: releases
+    api_key: "$GITHUB_TOKEN"
+    skip_cleanup: true
+    prerelease: true
+    overwrite: true
+    on:
+        tags: true
+    file:
+        - "build/*.tgz"
