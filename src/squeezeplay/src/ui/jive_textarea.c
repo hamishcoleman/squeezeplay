@@ -578,7 +578,7 @@ static void wordwrap(TextareaWidget *peer, char *text, int visible_lines, Uint16
 		    if (utf8_get_char(next, NULL) != ' ') {
 			break;
 		    }
-
+                    /* fall through */
 		case ' ':
 		case ',':
 		case '-':
