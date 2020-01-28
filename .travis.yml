@@ -4,6 +4,7 @@ language: c
 
 install:
     - sudo apt-get -y install libogg-dev libasound-dev dpkg-dev fakeroot debhelper
+    - sudo apt-get -y install libsdl-image1.2-dev libsdl-ttf2.0-dev libsdl-gfx1.2-dev portaudio19-dev libflac-dev libmad0-dev
 
 # The output of the tolua++ program has been committed to version control,
 # so try and force using it (the tolua++ program is not installed in the build
