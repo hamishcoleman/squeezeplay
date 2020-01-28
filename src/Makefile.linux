@@ -60,6 +60,12 @@ freetype-2.1.10/config.mk:
 freetype: freetype-2.1.10/config.mk
 	cd freetype-2.1.10; make; make install
 
+libpng-1.2.32/Makefile:
+	cd libpng-1.2.32/; ./configure ${ENABLE_PROFILING} --host=${HOST} --target=${TARGET} --prefix=${PREFIX}
+
+png: libpng-1.2.32/Makefile
+	cd libpng-1.2.32/; make && make install
+
 # sdl
 SDL-1.2.13/Makefile:
 	cd SDL-1.2.13; ./configure  ${ENABLE_PROFILING} --host=${HOST} --target=${TARGET} --prefix=${PREFIX}
@@ -71,7 +77,7 @@ sdl: SDL-1.2.13/Makefile
 SDL_image-1.2.5/Makefile:
 	cd SDL_image-1.2.5; SDL_CONFIG=${PREFIX}/bin/sdl-config ./configure --disable-tif  --host=${HOST} --target=${TARGET} ${ENABLE_PROFILING} --prefix=${PREFIX} ${LIBPNG} ${LIBJPEG}
 
-sdl-image: SDL_image-1.2.5/Makefile
+sdl-image: png SDL_image-1.2.5/Makefile
 	cd SDL_image-1.2.5; make && make install
 
 # sdl_ttf
