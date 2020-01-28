@@ -260,11 +260,11 @@ item.text as a secondary key.
 =cut
 --]]
 function itemComparatorWeightAlpha(a, b)
-        if a.weight == nil then
-            return 1
-        end
-        if b.weight == nil then
+        if a == nil or a.weight == nil then
             return -1
+        end
+        if b == nil or b.weight == nil then
+            return 1
         end
 
 	local w = a.weight - b.weight
