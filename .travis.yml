@@ -13,6 +13,7 @@ before_script:
 
 script:
     - make -C src/ -f Makefile.linux
+    - ls -al build
 
 deploy:
     provider: releases
