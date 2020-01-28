@@ -517,7 +517,7 @@ void decode_queue_metadata(enum metadata_type type, u8_t *metadata, size_t metad
 	}
 
 	buf = alloca(metadata_len + 4);
-	strncpy(buf, "META", 4);
+	memcpy(buf, "META", 4);
 	memcpy(buf + 4, metadata, metadata_len);
 
 	decode_queue_packet(buf, metadata_len + 4);
