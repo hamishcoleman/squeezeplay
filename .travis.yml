@@ -23,5 +23,4 @@ deploy:
     on:
         tags: true
     file_glob: true
-    file:
-        - "build/*.tgz"
+    file: build/*.tgz
