@@ -5,5 +5,11 @@ language: c
 install:
     - sudo apt-get -y install libogg-dev libasound-dev
 
+# The output of the tolua++ program has been committed to version control,
+# so try and force using it (the tolua++ program is not installed in the build
+# environment)
+before_script:
+    - touch src/squeezeplay/src/ui/lua_jiveui.c
+
 script:
     - make -C src/ -f Makefile.linux
