@@ -2,5 +2,8 @@ dist: bionic
 sudo: enabled
 language: c
 
+before_install:
+    - sudo apt-get -y install libogg-dev
+
 install:
     - make -C src/ -f Makefile.linux
