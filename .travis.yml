@@ -1,0 +1,6 @@
+dist: bionic
+sudo: enabled
+language: c
+
+install:
+    - make -C src/ -f Makefile.linux
