@@ -13,7 +13,7 @@ before_script:
 
 script:
     - cd src && make -f Makefile.linux
-    - make -C src/squeezeplay squeezeplay-deb
+    - make -C squeezeplay squeezeplay-deb
 
 deploy:
     provider: releases
