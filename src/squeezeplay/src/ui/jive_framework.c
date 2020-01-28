@@ -369,12 +369,16 @@ static int jiveL_process_events(lua_State *L) {
 		jive_sdlevent_pump(L);
 	}
 
+#if 0
+// SDL_EventQueueLength() is a custom patch added for the squeezebox,
+// since it appears to be simply debugging, we can remove it with no issue
 	/* check queue size */
 	if (perfwarn.queue) {
 		if (SDL_EventQueueLength() > perfwarn.queue) {
 			printf("SDL_event_queue > %2d : %3d\n", perfwarn.queue, SDL_EventQueueLength());
 		}
 	}
+#endif
 
 	/* process events */
 	process_timers(L);
