@@ -12,7 +12,7 @@ before_script:
     - touch src/squeezeplay/src/ui/lua_jiveui.c
 
 script:
-    - make -C src/ -f Makefile.linux
+    - cd src && make -f Makefile.linux
     - make -C src/squeezeplay squeezeplay-deb
 
 deploy:
@@ -25,5 +25,5 @@ deploy:
         tags: true
     file_glob: true
     file:
-        - ../build/*.tgz
+        - build/*.tgz
         - src/*.deb
