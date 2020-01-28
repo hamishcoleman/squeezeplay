@@ -3,7 +3,7 @@ sudo: enabled
 language: c
 
 before_install:
-    - sudo apt-get -y install libogg-dev
+    - sudo apt-get -y install libogg-dev libasound-dev
 
 install:
     - make -C src/ -f Makefile.linux
