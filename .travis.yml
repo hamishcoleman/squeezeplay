@@ -17,7 +17,7 @@ script:
 deploy:
     provider: releases
     token: "$GITHUB_TOKEN"
-    cleanup: false
+    skip_cleanup: true
     prerelease: true
     overwrite: true
     on:
