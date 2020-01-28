@@ -25,5 +25,5 @@ deploy:
         tags: true
     file_glob: true
     file:
-        - build/*.tgz
-        - src/*.deb
+        - ../build/*.tgz
+        - *.deb
