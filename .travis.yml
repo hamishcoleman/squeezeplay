@@ -2,8 +2,8 @@ dist: bionic
 sudo: enabled
 language: c
 
-before_install:
+install:
     - sudo apt-get -y install libogg-dev libasound-dev
 
-install:
+script:
     - make -C src/ -f Makefile.linux
