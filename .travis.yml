@@ -5,7 +5,6 @@ language: c
 
 jobs:
     include:
-        - arch: armhf
         - arch: amd64
 
 install:
