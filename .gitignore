@@ -107,8 +107,10 @@ src/SDL_ttf-2.0.8/libtool
 src/Tremor/Makefile
 src/Tremor/autom4te.cache/
 src/Tremor/config.h
+src/Tremor/config.h.in
 src/Tremor/config.log
 src/Tremor/config.status
+src/Tremor/configure
 src/Tremor/libtool
 src/Tremor/stamp-h1
 src/flac-1.2.1/Makefile
@@ -213,13 +215,16 @@ src/luajson/Makefile
 src/luajson/autom4te.cache/
 src/luajson/config.log
 src/luajson/config.status
+src/luajson/configure
 src/luajson/libtool
 src/luajson/src/config.h
+src/luajson/src/config.h.in
 src/luajson/src/stamp-h1
 src/luazipfilter/Makefile
 src/luazipfilter/autom4te.cache
 src/luazipfilter/config.log
 src/luazipfilter/config.status
+src/luazipfilter/configure
 src/luazipfilter/libtool
 src/luazipfilter/src/config.h
 src/luazipfilter/src/stamp-h1
@@ -234,25 +239,15 @@ src/squeezeplay/Makefile
 src/squeezeplay/autom4te.cache/
 src/squeezeplay/config.log
 src/squeezeplay/config.status
+src/squeezeplay/configure
 src/squeezeplay/libtool
 src/squeezeplay/src/config.h
+src/squeezeplay/src/config.h.in
 src/squeezeplay/src/stamp-h1
 src/squeezeplay/src/version.h
 src/squeezeplay_desktop/Makefile
 src/squeezeplay_desktop/config.log
 src/squeezeplay_desktop/config.status
-
-# Generated output that has been committed to the source control
-# These files will show up as changed after every build
-# (and since they are checked in, they cannot be .gitignored)
-# FIXME - remove them from the repo
-src/Tremor/config.h.in
-src/Tremor/configure
-src/luajson/configure
-src/luajson/src/config.h.in
-src/luazipfilter/configure
-src/squeezeplay/configure
-src/squeezeplay/src/config.h.in
 
 ####
 src/SDL-1.2.13/SDL.qpg
