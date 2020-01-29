@@ -1,8 +1,19 @@
-
 # Generic generated output
 *.o
 *.lo
 *.la
+
+# Output builds
+build/
+squeezeplay_*.deb
+squeezeplay_*.buildinfo
+squeezeplay_*.changes
+src/platforms/debian/.debhelper/
+src/platforms/debian/changelog
+src/platforms/debian/files
+src/platforms/debian/squeezeplay.debhelper.log
+src/platforms/debian/squeezeplay.substvars
+src/platforms/debian/squeezeplay/
 
 # Output libraries
 src/lua-5.1.1/src/liblua.a
@@ -81,6 +92,7 @@ src/SDL-1.2.13/libtool
 src/SDL-1.2.13/sdl-config
 src/SDL-1.2.13/sdl.pc
 src/SDL_gfx-2.0.15/Makefile
+src/SDL_gfx-2.0.15/autom4te.cache/
 src/SDL_gfx-2.0.15/config.log
 src/SDL_gfx-2.0.15/config.status
 src/SDL_gfx-2.0.15/libtool
@@ -93,6 +105,7 @@ src/SDL_ttf-2.0.8/config.log
 src/SDL_ttf-2.0.8/config.status
 src/SDL_ttf-2.0.8/libtool
 src/Tremor/Makefile
+src/Tremor/autom4te.cache/
 src/Tremor/config.h
 src/Tremor/config.log
 src/Tremor/config.status
@@ -197,6 +210,7 @@ src/libpng-1.2.32/libpng12.pc
 src/libpng-1.2.32/libtool
 src/libpng-1.2.32/stamp-h1
 src/luajson/Makefile
+src/luajson/autom4te.cache/
 src/luajson/config.log
 src/luajson/config.status
 src/luajson/libtool
@@ -216,6 +230,7 @@ src/portaudio_v19_1360/lib-stamp
 src/portaudio_v19_1360/libtool
 src/portaudio_v19_1360/portaudio-2.0.pc
 src/squeezeplay/Makefile
+src/squeezeplay/autom4te.cache/
 src/squeezeplay/config.log
 src/squeezeplay/config.status
 src/squeezeplay/libtool
@@ -226,17 +241,34 @@ src/squeezeplay_desktop/Makefile
 src/squeezeplay_desktop/config.log
 src/squeezeplay_desktop/config.status
 
+# Generated output that has been committed to the source control
+# These files will show up as changed after every build
+# (and since they are checked in, they cannot be .gitignored)
+# FIXME - remove them from the repo
+src/Tremor/config.h.in
+src/Tremor/configure
+src/luajson/configure
+src/luajson/src/config.h.in
+src/luazipfilter/autom4te.cache/output.0
+src/luazipfilter/autom4te.cache/requests
+src/luazipfilter/autom4te.cache/traces.0
+src/luazipfilter/configure
+src/squeezeplay/configure
+src/squeezeplay/src/config.h.in
 
 ####
 src/SDL-1.2.13/SDL.qpg
 src/SDL-1.2.13/build-deps
 src/SDL-1.2.13/build/
-src/SDL_gfx-2.0.15/autom4te.cache/
 src/SDL_image-1.2.5/SDL_image.qpg
 src/SDL_image-1.2.5/SDL_image.spec
 src/Tremor/Version_script
+src/Tremor/config.h.in~
+src/Tremor/debian/Makefile.in
 src/freetype-2.1.10/builds/unix/ftconfig.h
 src/freetype-2.1.10/builds/unix/libtool
 src/freetype-2.1.10/builds/unix/unix-cc.mk
 src/freetype-2.1.10/builds/unix/unix-def.mk
 src/freetype-2.1.10/config.mk
+src/luajson/src/config.h.in~
+src/squeezeplay/src/config.h.in~
