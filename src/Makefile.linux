@@ -43,14 +43,6 @@ all: lua-all app
 
 
 #####
-# SDL
-#####
-
-generated:
-	mkdir -p generated
-
-
-#####
 # lua
 #####
 
@@ -184,12 +176,6 @@ squeezeplay-deb: all squeezeplay-deb-make
 squeezeplay-deb-make: squeezeplay/Makefile
 	cd squeezeplay; make squeezeplay-deb
 
-.PHONY: clean_generated
-clean_generated:
-	@echo "----------------------------------------------------------"
-	@echo "Cleaning: generated dir"
-	-rm -rf generated
-
 
 #
 # clean
@@ -197,7 +183,6 @@ clean_generated:
 
 .PHONY: clean
 clean:
-	-rm -rf generated
 	-cd freetype-2.1.10; make distclean
 	-cd SDL-1.2.13; make distclean; rm -f include/SDL_config.h;
 	-cd SDL_image-1.2.5; make distclean
@@ -216,4 +201,3 @@ clean:
 	-cd tolua++-1.0.92/src/lib; rm libtolua++.so; rm *.o
 	-cd squeezeplay; make distclean
 	-cd squeezeplay_private; make distclean
-	-rm -rf generated
