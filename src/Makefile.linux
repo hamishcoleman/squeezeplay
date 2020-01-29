@@ -124,6 +124,8 @@ app: tremor ${SPPRIVATE_TARGETS} squeezeplay squeezeplay_desktop squeezeplay_con
 
 
 # ogg
+# This library has a number of patches specific to squeezeplay, so (for now)
+# we cannot replace it with an upstream package
 Tremor/Makefile:
 	cd Tremor; CFLAGS="-DSQUEEZEPLAY" ./configure --host=${HOST} --target=${TARGET} --prefix=${PREFIX}
 
