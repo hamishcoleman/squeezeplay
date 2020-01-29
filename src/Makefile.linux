@@ -30,7 +30,7 @@ SPPRIVATE=no
 
 ifeq ($(SPPRIVATE),yes)
 	ENABLE_SPPRIVATE=--with-spprivate
-	SPPRIVATE_TARGETS=axtls squeezeplay_private
+	SPPRIVATE_TARGETS=squeezeplay_private
 endif
 
 
@@ -119,7 +119,7 @@ tolua++: lua
 # squeezeplay
 #
 
-.PHONY: app tremor squeezeplay squeezeplay_desktop squeezeplay_contrib squeezeplay_private freefont freefont-debian axtls rtmp
+.PHONY: app tremor squeezeplay squeezeplay_desktop squeezeplay_contrib squeezeplay_private freefont freefont-debian rtmp
 app: tremor ${SPPRIVATE_TARGETS} squeezeplay squeezeplay_desktop squeezeplay_contrib freefont rtmp squeezeplay-tgz
 
 
@@ -132,17 +132,6 @@ Tremor/Makefile:
 tremor: Tremor/Makefile
 	cd Tremor; make && make install
 
-
-# axTLS
-AXTLS_DIR = generated/axTLS
-AXTLS_TAR = axTLS-1.2.0.tar.gz
-${AXTLS_DIR}/Makefile: generated
-	cd generated; tar xvf ../${AXTLS_TAR}
-	cp axTLS.config ${AXTLS_DIR}/config/.config
-	echo "PREFIX=\"${PREFIX}\"" >> ${AXTLS_DIR}/config/.config
-
-axtls: ${AXTLS_DIR}/Makefile
-	cd ${AXTLS_DIR}; make oldconfig && make && make install
 
 rtmp: squeezeplay
 	cd luartmp-squeezeplay; make
