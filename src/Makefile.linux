@@ -43,6 +43,13 @@ all: lua-all app
 lua-all: lua tolua++ luasocket slnunicode luajson loop luaexpat luafilesystem luaprofiler luazipfilter luamd5
 
 # lua (requires readline ncurses)
+# TODO:
+# - this lua has been patched with LUA_TINT "integer" patches, a version of
+#   which has been merged in lua5.3, however the included tolua++ uses the
+#   lua_getfenv() and lua_setfenv(), which are not present in lua5.3
+# - tolua++ upstream has not been updated for some time, so this would need
+#   to be resolved before all these included lua libraries can be replaced
+#   with system provided versions
 lua:
 	cd lua-5.1.1; make linux INSTALL_TOP=${PREFIX} && make install INSTALL_TOP=${PREFIX}
 
