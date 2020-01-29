@@ -68,7 +68,7 @@ luajson: luajson/Makefile
 	cd luajson; make && cp .libs/json.so ${PREFIX}/lib/lua/5.1/json.so
 
 luazipfilter/Makefile:
-	cd luajson; autoconf
+	cd luazipfilter; autoconf
 	cd luazipfilter; ./configure --host=${HOST} --target=${TARGET} --prefix=${PREFIX}
 
 luazipfilter: luazipfilter/Makefile
