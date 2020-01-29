@@ -217,6 +217,7 @@ src/luajson/libtool
 src/luajson/src/config.h
 src/luajson/src/stamp-h1
 src/luazipfilter/Makefile
+src/luazipfilter/autom4te.cache
 src/luazipfilter/config.log
 src/luazipfilter/config.status
 src/luazipfilter/libtool
@@ -249,9 +250,6 @@ src/Tremor/config.h.in
 src/Tremor/configure
 src/luajson/configure
 src/luajson/src/config.h.in
-src/luazipfilter/autom4te.cache/output.0
-src/luazipfilter/autom4te.cache/requests
-src/luazipfilter/autom4te.cache/traces.0
 src/luazipfilter/configure
 src/squeezeplay/configure
 src/squeezeplay/src/config.h.in
