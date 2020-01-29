@@ -68,6 +68,7 @@ luajson: luajson/Makefile
 	cd luajson; make && cp .libs/json.so ${PREFIX}/lib/lua/5.1/json.so
 
 luazipfilter/Makefile:
+	cd luajson; autoconf
 	cd luazipfilter; ./configure --host=${HOST} --target=${TARGET} --prefix=${PREFIX}
 
 luazipfilter: luazipfilter/Makefile
@@ -119,6 +120,7 @@ app: tremor squeezeplay squeezeplay_desktop squeezeplay_contrib freefont rtmp sq
 # This library has a number of patches specific to squeezeplay, so (for now)
 # we cannot replace it with an upstream package
 Tremor/Makefile:
+	cd Tremor; autoconf; autoheader
 	cd Tremor; CFLAGS="-DSQUEEZEPLAY" ./configure --host=${HOST} --target=${TARGET} --prefix=${PREFIX}
 
 tremor: Tremor/Makefile
@@ -132,6 +134,7 @@ rtmp: squeezeplay
 
 # squeezeplay
 squeezeplay/Makefile:
+	cd squeezeplay; autoconf; autoheader
 	cd squeezeplay; SDL_CONFIG=${SDL_CONFIG} ./configure ${ENABLE_PROFILING} --host=${HOST} --target=${TARGET} --prefix=${PREFIX}
 
 squeezeplay: squeezeplay/Makefile
