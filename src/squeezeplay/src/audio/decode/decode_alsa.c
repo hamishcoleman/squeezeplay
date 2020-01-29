@@ -92,12 +92,10 @@ static void decode_alsa_stop(void) {
 
 static pid_t decode_alsa_fork(const char *device, const char *capture, unsigned int buffer_time, unsigned int period_count, unsigned int sample_size, u32_t flags)
 {
-	char *path, b[10], p[10], f[10], s[10];
+	char b[10], p[10], f[10], s[10];
 	char *cmd[20];
 	pid_t pid;
 	int i, idx = 0, ret;
-
-	path = alloca(PATH_MAX);
 
 	/* jive_alsa [-v] -d <device> -b <buffer_time> -p <period_count> -f <flags> */
 
@@ -135,6 +133,7 @@ static pid_t decode_alsa_fork(const char *device, const char *capture, unsigned 
 	cmd[idx] = '\0';
 
 	if (IS_LOG_PRIORITY(log_audio_output, LOG_PRIORITY_DEBUG)) {
+                char *path = alloca(PATH_MAX);
 		path[0] = '\0';
 		for (i=0; i<idx; i++) {
 			strncat(path, cmd[i], PATH_MAX);
@@ -142,10 +141,6 @@ static pid_t decode_alsa_fork(const char *device, const char *capture, unsigned 
 		}
 		LOG_DEBUG(log_audio_output, "fork %s", path);
 	}
-
-	/* command path */
-	getcwd(path, PATH_MAX);
-	strncat(path, "/jive_alsa", PATH_MAX);
 
 	decode_audio_lock();
 	decode_audio->running = false;
@@ -158,7 +153,7 @@ static pid_t decode_alsa_fork(const char *device, const char *capture, unsigned 
 	}
 	if (pid == 0) {
 		/* child */
-		ret = execv(path, cmd);
+		ret = execvp(cmd[0], cmd);
 
 		LOG_ERROR(log_audio_output, "execv failed %d", errno);
 		_exit(-1);
