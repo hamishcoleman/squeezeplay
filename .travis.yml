@@ -19,7 +19,7 @@ before_script:
     - touch src/squeezeplay/src/ui/lua_jiveui.c
 
 script:
-    - cd src && make -f Makefile.linux
+    - cd src && make
     - make -C squeezeplay squeezeplay-deb
 
 deploy:
