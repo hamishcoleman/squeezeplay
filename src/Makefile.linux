@@ -46,9 +46,6 @@ all: lua-all app
 # SDL
 #####
 
-.PHONY: sdl-all freetype sdl sdl-image sdl-ttf sdl-gfx c-ares
-sdl-all: freetype sdl sdl-ttf sdl-image sdl-gfx
-
 generated:
 	mkdir -p generated
 
