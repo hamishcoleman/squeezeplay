@@ -44,12 +44,12 @@ static Uint16 screen_w, screen_h, screen_bpp;
 static bool screen_isfull = false;
 
 struct jive_keymap {
-	SDLKey keysym;
+	SDL_Keycode keysym;
 	JiveKey keycode;
 };
 
 struct jive_keyir {
-	SDLKey keysym;
+	SDL_Keycode keysym;
 	Uint32 code;
 };
 
@@ -90,7 +90,7 @@ static struct jive_keymap keymap[] = {
 	{ SDLK_MINUS,           JIVE_KEY_VOLUME_DOWN },
 	{ SDLK_PAGEUP,		JIVE_KEY_PAGE_UP },
 	{ SDLK_PAGEDOWN,	JIVE_KEY_PAGE_DOWN },
-	{ SDLK_PRINT,		JIVE_KEY_PRINT },
+	{ SDLK_PRINTSCREEN,	JIVE_KEY_PRINT },
 	{ SDLK_SYSREQ,		JIVE_KEY_PRINT },
 	{ SDLK_F1,              JIVE_KEY_PRESET_1 },
 	{ SDLK_F2,              JIVE_KEY_PRESET_2 },
@@ -125,7 +125,7 @@ static struct jive_keyir irmap[] = {
 
 static int process_event(lua_State *L, SDL_Event *event);
 static void process_timers(lua_State *L);
-static int filter_events(const SDL_Event *event);
+static int filter_events(void *userdata,union SDL_Event *event);
 int jiveL_update_screen(lua_State *L);
 
 
@@ -148,17 +148,17 @@ int jive_traceback (lua_State *L) {
 
 
 static int jiveL_initSDL(lua_State *L) {
-	const SDL_VideoInfo *video_info;
 #ifndef JIVE_NO_DISPLAY
 	JiveSurface *srf, *splash, *icon;
 	Uint16 splash_w, splash_h;
+        int wm_available;
 #endif
 	/* logging */
 	log_ui_draw = LOG_CATEGORY_GET("squeezeplay.ui.draw");
 	log_ui = LOG_CATEGORY_GET("squeezeplay.ui");
 
 	/* linux fbcon does not need a mouse */
-	SDL_putenv("SDL_NOMOUSE=1");
+	SDL_setenv("SDL_NOMOUSE","1",1);
 
 #ifdef JIVE_NO_DISPLAY
 #   define JIVE_SDL_FEATURES (SDL_INIT_EVENTLOOP)
@@ -172,25 +172,16 @@ static int jiveL_initSDL(lua_State *L) {
 		exit(-1);
 	}
 
-	/* report video info */
-	if ((video_info = SDL_GetVideoInfo())) {
-		LOG_INFO(log_ui_draw, "%d,%d %d bits/pixel %d bytes/pixel [R<<%d G<<%d B<<%d]", video_info->current_w, video_info->current_h, video_info->vfmt->BitsPerPixel, video_info->vfmt->BytesPerPixel, video_info->vfmt->Rshift, video_info->vfmt->Gshift, video_info->vfmt->Bshift);
-		LOG_INFO(log_ui_draw, "Hardware acceleration %s available", video_info->hw_available?"is":"is not");
-	}
-
 	/* Register callback for additional events (used for multimedia keys)*/
 	SDL_EventState(SDL_SYSWMEVENT,SDL_ENABLE);
-	SDL_SetEventFilter(filter_events);
+	SDL_SetEventFilter(filter_events,NULL);
 
 	platform_init(L);
 
 #ifndef JIVE_NO_DISPLAY
 
 	/* open window */
-	SDL_WM_SetCaption("SqueezePlay Beta", "SqueezePlay Beta");
 	SDL_ShowCursor(SDL_DISABLE);
-	SDL_EnableKeyRepeat (100, 100);
-	SDL_EnableUNICODE(1);
 
 	/* load the icon */
 	icon = jive_surface_load_image("jive/app.png");
@@ -199,16 +190,20 @@ static int jiveL_initSDL(lua_State *L) {
 		jive_surface_free(icon);
 	}
 
+        /* FIXME - hardcoded size */
 #ifdef SCREEN_ROTATION_ENABLED
-	screen_w = video_info->current_h;
-	screen_h = video_info->current_w;
+	screen_w = 272;
+	screen_h = 480;
 #else
-	screen_w = video_info->current_w;
-	screen_h = video_info->current_h;
+	screen_w = 480;
+	screen_h = 272;
 #endif
-	screen_bpp = video_info->vfmt->BitsPerPixel;
+	screen_bpp = 32;
 
-	if (video_info->wm_available) {
+        /* FIXME - hardcoded mode */
+        wm_available = 1;
+
+	if (wm_available) {
 		/* desktop build */
 		splash = jive_surface_load_image("jive/splash.png");
 		if (splash) {
@@ -278,7 +273,7 @@ static int jiveL_initSDL(lua_State *L) {
 	return 0;
 }
 
-static int filter_events(const SDL_Event *event)
+static int filter_events(void *userdata, union SDL_Event *event)
 {
 	if (jive_sdlfilter_pump) {
 		return jive_sdlfilter_pump(event);
@@ -377,7 +372,7 @@ static int jiveL_process_events(lua_State *L) {
 
 	/* process events */
 	process_timers(L);
-	while (SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_ALLEVENTS) > 0 ) {
+	while (SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT) > 0 ) {
 		r |= process_event(L, &event);
 	}
 
@@ -1006,20 +1001,10 @@ static int process_event(lua_State *L, SDL_Event *event) {
 		exit(0);
 		break;
 
-	case SDL_MOUSEBUTTONDOWN:
-		/* map the mouse scroll wheel to up/down */
-		if (event->button.button == SDL_BUTTON_WHEELUP) {
-			jevent.type = JIVE_EVENT_SCROLL;
-			--(jevent.u.scroll.rel);
-			break;
-		}
-		else if (event->button.button == SDL_BUTTON_WHEELDOWN) {
-			jevent.type = JIVE_EVENT_SCROLL;
-			++(jevent.u.scroll.rel);
-			break;
-		}
-
-		// Fall through
+        case SDL_MOUSEWHEEL:
+                jevent.type = JIVE_EVENT_SCROLL;
+                jevent.u.scroll.rel = -event->wheel.y;
+                break;
 
 	case SDL_MOUSEBUTTONUP:
 		if (event->button.button == SDL_BUTTON_LEFT) {
@@ -1151,14 +1136,11 @@ static int process_event(lua_State *L, SDL_Event *event) {
 
 		if (entry->keysym == SDLK_UNKNOWN) {
 			// handle regular character keys ('a', 't', etc..)
-			if (event->type == SDL_KEYDOWN && event->key.keysym.unicode != 0) {
+                        // FIXME: this is not using the "normal" SDL2 method
+                        // and is thus going to suck for non US keyboards
+			if (event->type == SDL_KEYDOWN && event->key.keysym.sym>=' ' && event->key.keysym.sym<='z') {
 				jevent.type = JIVE_EVENT_CHAR_PRESS;
-				if (event->key.keysym.sym == SDLK_BACKSPACE) {
-					//special case for Backspace, where value set is not ascii value, instead pass backspace ascii value
-					jevent.u.text.unicode = 8;
-				} else {
-					jevent.u.text.unicode = event->key.keysym.unicode;
-				}
+                                jevent.u.text.unicode = event->key.keysym.sym;
 			}
 		}
 
@@ -1253,39 +1235,6 @@ static int process_event(lua_State *L, SDL_Event *event) {
 		memcpy(&jevent, event->user.data1, sizeof(JiveEvent));
 		free(event->user.data1);
 		break;
-
-	case SDL_VIDEORESIZE: {
-		JiveSurface *srf;
-		int bpp = 16;
-
-		screen_w = event->resize.w;
-		screen_h = event->resize.h;
-
-		srf = jive_surface_set_video_mode(screen_w, screen_h, bpp, false);
-
-		lua_getfield(L, 1, "screen");
-
-		lua_getfield(L, -1, "bounds");
-		lua_pushinteger(L, screen_w);
-		lua_rawseti(L, -2, 3);
-		lua_pushinteger(L, screen_h);
-		lua_rawseti(L, -2, 4);
-		lua_pop(L, 1);
-
-		tolua_pushusertype(L, srf, "Surface");
-		lua_setfield(L, -2, "surface");
-
-		lua_pop(L, 1);
-
-		next_jive_origin++;
-
-		jevent.type = JIVE_EVENT_WINDOW_RESIZE;
-		
-		/* Avoid mouse_up causing a mouse press event to occur */
-		mouse_state = MOUSE_STATE_NONE;
-		break;
-
-	}
 
 	default:
 		return 0;

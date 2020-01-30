@@ -14,8 +14,8 @@
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <SDL_gfxPrimitives.h>
-#include <SDL_rotozoom.h>
+#include <SDL2_gfxPrimitives.h>
+#include <SDL2_rotozoom.h>
 
 
 /* target frame rate 14 fps (originally) - may be tuned per platform, should be /2 */

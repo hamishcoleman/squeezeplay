@@ -20,7 +20,7 @@ export LDFLAGS=-L${PREFIX}/lib
 
 export TOOLPATH = $(shell dirname `which gcc`)
 
-export SDL_CONFIG = sdl-config
+export SDL_CONFIG = /usr/bin/sdl2-config
 
 ENABLE_PROFILING=--enable-profiling --disable-shared
 USE_MMX=--disable-mmx

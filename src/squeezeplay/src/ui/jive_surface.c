@@ -208,18 +208,20 @@ static void _load_image (Uint16 index, bool hasAlphaFlags, Uint32 alphaFlags) {
 		return;
 	}
 	if (tmp->format->Amask) {
-		srf = SDL_DisplayFormatAlpha(tmp);
 		image->flags |= IMAGE_FLAG_AMASK;
-	} else {
-		srf = SDL_DisplayFormat(tmp);
 	}
+        srf = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
 	SDL_FreeSurface(tmp);
 
 	if (!srf)
 		return;
 
 	if (hasAlphaFlags) {
-		SDL_SetAlpha(srf, alphaFlags, 0);
+            SDL_BlendMode mode = SDL_BLENDMODE_NONE;
+            if (alphaFlags) {
+                LOG_WARN(log_ui_draw, "Unhandled alphaFlags\n");
+            }
+            SDL_SetSurfaceBlendMode(srf, mode);
 	}
 
 	image->loaded = calloc(sizeof *(image->loaded), 1);
@@ -490,12 +492,7 @@ JiveTile *jive_tile_load_image_data(const char *data, size_t len) {
 		return NULL;
 	}
 	else {
-		if (tmp->format->Amask) {
-			srf = SDL_DisplayFormatAlpha(tmp);
-		}
-		else {
-			srf = SDL_DisplayFormat(tmp);
-		}
+                srf = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
 		SDL_FreeSurface(tmp);
 	}
 
@@ -589,8 +586,13 @@ void jive_tile_set_alpha(JiveTile *tile, Uint32 flags) {
 	SDL_Surface *srf[9];
 	int i;
 
+        SDL_BlendMode mode = SDL_BLENDMODE_NONE;
+        if (flags) {
+            LOG_WARN(log_ui_draw, "Unhandled blend mode flags\n");
+        }
+
 	if (tile->sdl) {
-		SDL_SetAlpha(tile->sdl, flags, 0);
+                SDL_SetSurfaceBlendMode(tile->sdl, mode);
 		return;
 	}
 
@@ -600,7 +602,7 @@ void jive_tile_set_alpha(JiveTile *tile, Uint32 flags) {
 	_get_tile_surfaces(tile, srf, false);
 	for (i=0; i<9; i++) {
 		if (srf[i]) {
-			SDL_SetAlpha(srf[i], flags, 0);
+                        SDL_SetSurfaceBlendMode(tile->sdl, mode);
 		}
 	}
 }
@@ -823,7 +825,7 @@ void jive_tile_blit_centered(JiveTile *tile, JiveSurface *dst, Uint16 dx, Uint16
 
 JiveSurface *jive_surface_set_video_mode(Uint16 w, Uint16 h, Uint16 bpp, bool fullscreen) {
 	JiveSurface *srf;
-	SDL_Surface *sdl;
+	SDL_Window *sdw;
 	Uint32 flags;
 
 #ifdef SCREEN_ROTATION_ENABLED
@@ -837,13 +839,25 @@ JiveSurface *jive_surface_set_video_mode(Uint16 w, Uint16 h, Uint16 bpp, bool fu
 #endif
 
 	if (fullscreen) {
-	    flags = SDL_FULLSCREEN;
+	    flags = SDL_WINDOW_FULLSCREEN;
 	}
 	else {
-	    flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE;
+	    flags = SDL_WINDOW_RESIZABLE;
 	}
 
-	sdl = SDL_GetVideoSurface();
+#error DIG HERE
+        /* create new surface */
+        sdw = SDL_CreateWindow(
+                "Squeezeplay",
+                SDL_WINDOWPOS_UNDEFINED,
+                SDL_WINDOWPOS_UNDEFINED,
+                w, h, flags);
+        if (!sdw) {
+            LOG_ERROR(log_ui_draw, "SDL_CreateWindow .. %dx%d: %s",
+                      w, h, SDL_GetError());
+            return NULL;
+        }
+        // https://wiki.libsdl.org/MigrationGuide#Setting_up_a_game_with_the_new_video_API
 
 	if (sdl) {
 		const SDL_VideoInfo *video_info;
