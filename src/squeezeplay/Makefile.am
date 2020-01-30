@@ -64,7 +64,7 @@ BUNDLE_CONTENTS = $(BUNDLE_NAME)/Contents
 PLIST_FILE = $(BUNDLE_CONTENTS)/Info.plist
 
 VERSION_TEXT = $(shell git describe --dirty)
-DEB_VERSION_TEXT = $(VERSION_TEXT)
+DEB_VERSION_TEXT = $(subst v,,$(VERSION_TEXT))
 TGZ_VERSION_TEXT = $(VERSION_TEXT)
 ICNS_NAME = icon.icns
 DMG_TEMP_DIR = temp-SqueezePlay_image
